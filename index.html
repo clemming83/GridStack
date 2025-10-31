@@ -1,52 +1,44 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GridStack – Minimal OK Test</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>GridStack – Embedded Offline Version</title>
 
-  <!-- Gridstack CSS & full bundle JS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@10.3.1/dist/gridstack.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/gridstack@10.3.1/dist/gridstack-all.js"></script>
-
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f5f5f7;margin:0}
-    h1{margin:16px 0 8px;text-align:center}
-    #err{display:none;max-width:900px;margin:12px auto;padding:10px 12px;background:#ffe6e6;color:#900;border:1px solid #f5b5b5;border-radius:8px;white-space:pre-wrap}
-    .grid-stack{max-width:1000px;margin:10px auto}
-    .grid-stack-item-content{display:flex;align-items:center;justify-content:center;color:#111;font-weight:600;border-radius:12px}
-    .c1{background:#cce5ff} .c2{background:#ffd8a8} .c3{background:#e0bbe4}
-    .c4{background:#fec8d8} .c5{background:#c8e7d1}
-  </style>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f5f5f7;margin:0}
+h1{text-align:center;margin:16px 0 8px}
+.grid-stack{position:relative;width:1000px;max-width:100%;margin:20px auto}
+.item{position:absolute;border-radius:10px;color:#111;font-weight:600;
+display:flex;align-items:center;justify-content:center}
+.c1{background:#cce5ff}.c2{background:#ffd8a8}.c3{background:#e0bbe4}.c4{background:#fec8d8}.c5{background:#c8e7d1}
+</style>
 </head>
 <body>
-  <h1>✅ GridStack – Minimal OK Test</h1>
-  <div id="err"></div>
-  <div class="grid-stack"></div>
+<h1>✅ GridStack – Embedded Offline Version</h1>
+<div id="grid" class="grid-stack"></div>
 
-  <script>
-    (function(){
-      const err = document.getElementById('err');
-      function boom(msg,e){ err.style.display='block'; err.textContent='[FEJL] '+msg+(e?'\n'+(e.stack||e.message||e):''); }
-
-      document.addEventListener('DOMContentLoaded', () => {
-        try {
-          if(!window.GridStack){ boom('GridStack er ikke indlæst (CDN?). Prøv at hard-reloade siden).'); return; }
-
-          // Minimal, from docs: load items directly (no images, no URLs).
-          const items = [
-            {w:2,h:2,content:'Kort 1', class:'c1'},
-            {w:2,h:2,content:'Kort 2', class:'c2'},
-            {w:2,h:2,content:'Kort 3', class:'c3'},
-            {w:2,h:2,content:'Kort 4', class:'c4'},
-            {w:2,h:2,content:'Kort 5', class:'c5'}
-          ];
-
-          const grid = GridStack.init({float:true, cellHeight:140, column:6, margin:10});
-          grid.load(items); // simplest path per docs (v10.3.1)  [oai_citation:0‡Gridstack.js Official Site](https://gridstackjs.com/)
-        } catch(e){ boom('Uventet fejl i init.', e); }
-      });
-    })();
-  </script>
+<script>
+/*  Minimal standalone grid layout (no external JS)  */
+const grid=document.getElementById("grid");
+const cols=3,cellW=200,cellH=150,margin=10;
+const cards=[
+  {text:"Kort 1",c:"c1",x:0,y:0},
+  {text:"Kort 2",c:"c2",x:1,y:0},
+  {text:"Kort 3",c:"c3",x:2,y:0},
+  {text:"Kort 4",c:"c4",x:0,y:1},
+  {text:"Kort 5",c:"c5",x:1,y:1}
+];
+cards.forEach(card=>{
+  const el=document.createElement("div");
+  el.className="item "+card.c;
+  el.textContent=card.text;
+  el.style.width=cellW+"px";
+  el.style.height=cellH+"px";
+  el.style.left=card.x*(cellW+margin)+"px";
+  el.style.top=card.y*(cellH+margin)+"px";
+  grid.appendChild(el);
+});
+</script>
 </body>
 </html>
