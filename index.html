@@ -1,44 +1,64 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>GridStack – Embedded Offline Version</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>GoWish Grid POC</title>
 
-<style>
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f5f5f7;margin:0}
-h1{text-align:center;margin:16px 0 8px}
-.grid-stack{position:relative;width:1000px;max-width:100%;margin:20px auto}
-.item{position:absolute;border-radius:10px;color:#111;font-weight:600;
-display:flex;align-items:center;justify-content:center}
-.c1{background:#cce5ff}.c2{background:#ffd8a8}.c3{background:#e0bbe4}.c4{background:#fec8d8}.c5{background:#c8e7d1}
-</style>
+  <!-- Local copies so GitHub Pages can execute them -->
+  <link rel="stylesheet" href="libs/gridstack.min.css" />
+  <script src="libs/gridstack-all.js"></script>
+
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f5f5f7;margin:0}
+    h1{text-align:center;margin:16px 0 8px}
+    .grid-stack{max-width:1000px;margin:20px auto}
+    .grid-stack-item-content{
+      background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.1);
+      display:flex;flex-direction:column;align-items:center;overflow:hidden;
+      transition:transform .1s ease;
+    }
+    .grid-stack-item-content:hover{transform:scale(1.02)}
+    .product-card img{width:100%;height:180px;object-fit:cover;border-bottom:1px solid #eee}
+    .product-card .title{font-size:15px;font-weight:600;text-align:center;margin:8px 8px 4px}
+    .product-card .price{color:#555;font-size:14px;margin-bottom:8px}
+  </style>
 </head>
-<body>
-<h1>✅ GridStack – Embedded Offline Version</h1>
-<div id="grid" class="grid-stack"></div>
 
-<script>
-/*  Minimal standalone grid layout (no external JS)  */
-const grid=document.getElementById("grid");
-const cols=3,cellW=200,cellH=150,margin=10;
-const cards=[
-  {text:"Kort 1",c:"c1",x:0,y:0},
-  {text:"Kort 2",c:"c2",x:1,y:0},
-  {text:"Kort 3",c:"c3",x:2,y:0},
-  {text:"Kort 4",c:"c4",x:0,y:1},
-  {text:"Kort 5",c:"c5",x:1,y:1}
-];
-cards.forEach(card=>{
-  const el=document.createElement("div");
-  el.className="item "+card.c;
-  el.textContent=card.text;
-  el.style.width=cellW+"px";
-  el.style.height=cellH+"px";
-  el.style.left=card.x*(cellW+margin)+"px";
-  el.style.top=card.y*(cellH+margin)+"px";
-  grid.appendChild(el);
-});
-</script>
+<body>
+  <h1>🎁 GoWish Ønskeliste Grid</h1>
+  <div class="grid-stack"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const products=[
+        {title:'HAY – Recycled Vase',price:'299 kr',
+         img:'https://via.placeholder.com/400x300/CCE5FF/000000?text=HAY+Vase'},
+        {title:'LEGO Icons Flower Bouquet',price:'449 kr',
+         img:'https://via.placeholder.com/400x300/FFD8A8/000000?text=LEGO+Bouquet'},
+        {title:'Apple AirPods Pro (2. gen)',price:'1.899 kr',
+         img:'https://via.placeholder.com/400x300/E0BBE4/000000?text=AirPods+Pro'},
+        {title:'Kähler Hammershøi Lysestage',price:'249 kr',
+         img:'https://via.placeholder.com/400x300/FEC8D8/000000?text=Lysestage'},
+        {title:'Georg Jensen Sky Karaffel',price:'699 kr',
+         img:'https://via.placeholder.com/400x300/C8E7D1/000000?text=Sky+Karaffel'}
+      ];
+
+      const grid=GridStack.init({float:true,cellHeight:260,column:6,margin:10});
+      products.forEach((p,idx)=>{
+        const el=document.createElement('div');
+        el.classList.add('grid-stack-item');
+        el.setAttribute('gs-x',(idx*2)%6);
+        el.setAttribute('gs-y',Math.floor(idx/3)*2);
+        el.setAttribute('gs-w',2);
+        el.setAttribute('gs-h',2);
+        const c=document.createElement('div');
+        c.className='grid-stack-item-content product-card';
+        c.innerHTML=`<img src="${p.img}" alt="${p.title}"/><div class="title">${p.title}</div><div class="price">${p.price}</div>`;
+        el.appendChild(c);
+        grid.addWidget(el);
+      });
+    });
+  </script>
 </body>
 </html>
