@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GoWish Grid POC</title>
-  <link href="https://cdn.jsdelivr.net/npm/gridstack@10.3.1/dist/gridstack.min.css" rel="stylesheet" />
+  <title>GoWish Grid POCv2</title>
+
+  <!-- Gridstack CSS & JS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/gridstack@10.3.1/dist/gridstack.min.css"
+    rel="stylesheet"
+  />
   <script src="https://cdn.jsdelivr.net/npm/gridstack@10.3.1/dist/gridstack-h5.js"></script>
 
   <style>
@@ -44,7 +49,7 @@
     .grid-stack-item-content {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -84,47 +89,49 @@
   <div class="grid-stack"></div>
 
   <script>
-    window.onload = function() {
+    document.addEventListener("DOMContentLoaded", () => {
       const products = [
         {
           title: "HAY – Recycled Vase",
           price: "299 kr",
           img: "https://via.placeholder.com/400x300/CCE5FF/000000?text=HAY+Vase",
-          url: "https://gowish.com/da/product/1"
+          url: "https://gowish.com/da/product/1",
         },
         {
           title: "LEGO Icons Flower Bouquet",
           price: "449 kr",
           img: "https://via.placeholder.com/400x300/FFD8A8/000000?text=LEGO+Bouquet",
-          url: "https://gowish.com/da/product/2"
+          url: "https://gowish.com/da/product/2",
         },
         {
           title: "Apple AirPods Pro (2. gen)",
           price: "1.899 kr",
           img: "https://via.placeholder.com/400x300/E0BBE4/000000?text=AirPods+Pro",
-          url: "https://gowish.com/da/product/3"
+          url: "https://gowish.com/da/product/3",
         },
         {
           title: "Kähler Hammershøi Lysestage",
           price: "249 kr",
           img: "https://via.placeholder.com/400x300/FEC8D8/000000?text=Lysestage",
-          url: "https://gowish.com/da/product/4"
+          url: "https://gowish.com/da/product/4",
         },
         {
           title: "Georg Jensen Sky Karaffel",
           price: "699 kr",
           img: "https://via.placeholder.com/400x300/C8E7D1/000000?text=Sky+Karaffel",
-          url: "https://gowish.com/da/product/5"
-        }
+          url: "https://gowish.com/da/product/5",
+        },
       ];
 
+      // Start Gridstack
       const grid = GridStack.init({
         float: true,
         cellHeight: 260,
         column: 6,
-        margin: 10
+        margin: 10,
       });
 
+      // Tilføj produkter til grid
       products.forEach((p, idx) => {
         const el = document.createElement("div");
         el.classList.add("grid-stack-item");
@@ -136,7 +143,7 @@
         const content = document.createElement("div");
         content.classList.add("grid-stack-item-content", "product-card");
         content.innerHTML = `
-          <a href="${p.url}" target="_blank">
+          <a href="${p.url}" target="_blank" rel="noopener">
             <img src="${p.img}" alt="${p.title}" />
           </a>
           <div class="title">${p.title}</div>
@@ -146,6 +153,7 @@
         grid.addWidget(el);
       });
 
+      // Gem/Nulstil layout
       document.getElementById("saveBtn").addEventListener("click", () => {
         const data = grid.save(false);
         localStorage.setItem("gowishLayout", JSON.stringify(data));
@@ -156,7 +164,7 @@
         localStorage.removeItem("gowishLayout");
         location.reload();
       });
-    };
+    });
   </script>
 </body>
 </html>
